@@ -1,0 +1,76 @@
+<div class="container search-container">
+    <h2 class="text-center mb-4">ค้นหาสถานที่</h2>
+
+    <div class="search-panel">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label for="id" class="form-label">รหัสสถานที่ (ID)</label>
+                <div class="input-group">
+                    <input id="id" type="number" class="form-control" placeholder="เช่น 1001" formControlName="id"
+                        #id />
+                    <button type="button" class="btn btn-primary" (click)="getTripById(id)">ค้นหา</button>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label for="name" class="form-label">ชื่อสถานที่</label>
+                <div class="input-group">
+                    <input id="name" type="text" class="form-control" placeholder="เช่น Eiffel Tower"
+                        formControlName="name" #name />
+                    <button type="button" class="btn btn-primary" (click)="getTripname(name)">ค้นหา</button>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label for="country" class="form-label">ประเทศ</label>
+                <div class="input-group">
+                    <select id="country" class="form-select" #cty>
+                        <option value="">เลือกประเทศ</option>
+                        <option *ngFor="let c of countries" [value]="c.value">
+                            {{ c.name }}
+                        </option>
+                    </select>
+                    <button type="button" class="btn btn-primary" (click)="getSelectTrip(cty)">
+                        ค้นหา
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label for="country" class="form-label">โซน</label>
+                <div class="input-group">
+                    <select class="form-select" #zone>
+                        <option value="">เลือกโซน</option>
+                        <option *ngFor="let c of zones" [value]="c.value">
+                            {{ c.name }}
+                        </option>
+                    </select>
+                    <button type="button" class="btn btn-primary" (click)="getSelectZoneTrip(zone)">
+                        ค้นหา
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="row g-4">
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3" *ngFor="let trip of trip_map">
+            <div class="card h-100 shadow-sm">
+                <div class="image-container"
+                    style="width: auto; height: 200px; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa; border-bottom: 1px solid #dee2e6;">
+
+                    <img [src]="trip.coverimage">
+
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{trip.name}}</h5>
+                    <a [routerLink]="['/details', trip.idx]" class="btn btn-primary mt-auto">Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

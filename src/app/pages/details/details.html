@@ -1,0 +1,30 @@
+
+<div class="detail-page" *ngIf="!loading && trip; else loadingTpl">
+  <button class="back-btn" (click)="back()">← ย้อนกลับ</button>
+
+  <div class="card">
+    <div class="media">
+      <img [src]="trip!.coverimage" [alt]="trip!.name" />
+    </div>
+
+    <div class="body">
+      <h2 class="title">{{ trip!.name }}</h2>
+
+      <ul class="meta">
+        <li><strong>ประเทศ:</strong> {{ trip!.country  }}</li>
+        <li><strong>โซน:</strong> {{ trip!.destination_zone }}</li>
+        <li><strong>ราคา:</strong> {{ trip!.price }}</li>
+        <li><strong>ระยะเวลา:</strong> {{ trip!.duration }} วัน</li>
+      </ul>
+
+      <div class="detail">
+        <h3>รายละเอียด</h3>
+        <p>{{ trip!.detail }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="loading">กำลังโหลดข้อมูล...</div>
+</ng-template>

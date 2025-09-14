@@ -1,0 +1,66 @@
+<div class="insert-page">
+    <div class="card">
+        <h2 class="title">เพิ่มข้อมูล</h2>
+
+        <div class="from">
+            <div class="row">
+                <label>
+                    ชื่อ
+                    <input [(ngModel)]="name" placeholder="หัวข้อของรายการ" />
+                    <!-- <small class="error">กรุณากรอกหัวข้อ (อย่างน้อย 3 ตัวอักษร)</small> -->
+                </label>
+
+                <label>
+                    ราคา
+                    <input [(ngModel)]="price" placeholder="หัวข้อของรายการ" />
+
+                </label>
+
+                <label>
+                    zone ประเทศ
+                    <select [(ngModel)]="destinationId" (change)="onZoneChange(destinationId)">
+                        <option [ngValue]="null" disabled> เลือกโซน</option>
+                        <option *ngFor="let z of zones" [ngValue]="z.value">{{ z.name }}</option>
+                    </select>
+                </label>
+
+                <label>
+                    ประเทศ
+                    <select [(ngModel)]="country" [disabled]="!destinationId == null">
+                        <option [ngValue]="null" disabled> เลือกประเทศ </option>
+                        <option *ngFor="let c of filteredCountries" [ngValue]="c">
+                            {{ c }}
+                        </option>
+                    </select>
+                </label>
+
+                <label>
+                    วัน
+                    <input [(ngModel)]="duration" placeholder="หัวข้อของรายการ" />
+
+                </label>
+
+                <label class="full">
+                    รายละเอียด
+                    <textarea [(ngModel)]="detail" rows="4" placeholder="รายละเอียดเพิ่มเติม..."></textarea>
+                </label>
+
+
+
+                <label>
+                    รูปภาพ
+                    <input [(ngModel)]="cover" placeholder="url รูปภาพ" />
+                </label>
+
+
+            </div>
+
+            <div class="actions">
+                <button type="button" (click)="addfrom()" class="btn primary">บันทึก</button>
+                <button type="button" (click)="resetForm()" class="btn">รีเซ็ต</button>
+            </div>
+        </div>
+
+        <div class="message success" *ngIf="saved">บันทึกเรียบร้อยแล้ว ✅</div>
+    </div>
+</div>
