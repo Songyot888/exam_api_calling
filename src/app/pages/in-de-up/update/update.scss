@@ -1,166 +1,273 @@
-/* --- Variables (คงเดิม) --- */
-$bg: #f6f8ff;
-$card: #ffffff;
-$muted: #6b7280;
-$accent1: #556ee6;
-$accent2: #8a9bff;
-$error: #ef4444;
-$success: #16a34a;
+/* Import Google Font (ควรใส่ไว้ที่ styles.css หลักของโปรเจกต์) */
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;700&display=swap');
 
-/* --- Base Styles --- */
-.insert-page {
-  min-height: 100vh;
-  display: flex;
-  align-items: flex-start; /* ปรับเป็น flex-start เพื่อให้การ์ดอยู่ด้านบนเมื่อจอเล็ก */
-  justify-content: center;
-  padding: 2rem 1rem; /* ปรับ padding ให้เหมาะกับทุกขนาดจอ */
-  background: $bg; /* ใช้สีพื้นหลังเรียบๆ เพื่อความสะอาดตา */
-  font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* เพิ่ม Inter เป็นฟอนต์หลัก */
-  box-sizing: border-box;
+/* General Styles */
+:host {
+    font-family: 'Sarabun', sans-serif;
+    background-color: #f4f7fa;
+    padding: 2rem;
+    display: block;
+    color: #333;
 }
 
-/* --- Card Styles --- */
-.card {
-  width: 100%;
-  max-width: 800px; /* ปรับขนาดการ์ดเล็กน้อย */
-  background: $card;
-  border-radius: 16px; /* เพิ่มความโค้งมน */
-  box-shadow: 0 8px 32px rgba(18, 30, 60, 0.07); /* ปรับเงาให้นุ่มนวลขึ้น */
-  padding: 2rem; /* เพิ่ม padding ภายใน */
-  box-sizing: border-box;
+/* Layout Container */
+.row-container {
+    display: flex;
+    flex-wrap: wrap; /* ให้ขึ้นบรรทัดใหม่บนจอเล็ก */
+    gap: 2rem;
+    max-width: 1400px;
+    margin: auto;
+}
 
-  .title {
-    margin: 0 0 2rem; /* เพิ่มระยะห่างด้านล่าง */
-    font-size: 1.5rem; /* เพิ่มขนาดฟอนต์ */
-    color: #1a202c; /* ปรับสีให้เข้มขึ้น */
-    font-weight: 700;
-  }
+/* Left Panel: Trip List */
+.left-panel {
+    flex: 1;
+    min-width: 350px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+}
 
-  /* --- Form Container (ใช้ .from ตาม HTML เดิม) --- */
-  .from {
-    .row {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem; /* เพิ่มระยะห่างระหว่างช่อง */
+.left-header {
+    padding: 1.25rem;
+    border-bottom: 1px solid #e9ecef;
+}
 
-      @media (max-width: 720px) {
-        grid-template-columns: 1fr;
-        gap: 1.25rem;
-      }
+.left-header h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+    color: #212529;
+}
 
-      label {
-        display: flex;
-        flex-direction: column;
-        font-size: 0.875rem; /* 14px */
-        color: $muted; /* ใช้สี muted เพื่อลดความเด่น */
-        font-weight: 500;
+.left-header .tools {
+    display: flex;
+    gap: 0.75rem;
+}
 
-        /* --- Input, Select, Textarea Shared Styles --- */
-        input, select, textarea {
-          margin-top: 0.5rem; /* 8px */
-          padding: 0.75rem 1rem; /* 12px 16px */
-          border-radius: 12px;
-          border: 1px solid #e2e8f0;
-          background: #fdfdff; /* เพิ่มสีพื้นหลังเล็กน้อย */
-          font-size: 1rem; /* 16px */
-          color: #2d3748;
-          outline: none;
-          transition: all 0.2s ease;
-        }
-
-        /* --- Focus State --- */
-        input:focus, select:focus, textarea:focus {
-          border-color: $accent1;
-          box-shadow: 0 0 0 3px rgba($accent1, 0.15);
-        }
-
-        textarea {
-          min-height: 120px;
-          resize: vertical;
-        }
-
-        /* Span across all columns */
-        &.full {
-          grid-column: 1 / -1;
-        }
-
-        small.error {
-          color: $error;
-          margin-top: 0.5rem;
-          font-size: 0.8rem;
-          font-weight: 500;
-        }
-      }
-    }
-
-    /* --- Action Buttons --- */
-    .actions {
-      display: flex;
-      gap: 1rem;
-      margin-top: 2rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid #e2e8f0; /* เพิ่มเส้นคั่น */
-      justify-content: flex-end; /* จัดปุ่มไปทางขวา */
-
-      .btn {
-        padding: 0.75rem 1.5rem;
-        border-radius: 12px;
-        border: none;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 0.95rem;
-        transition: all 0.15s ease;
-
-        &:active {
-          transform: translateY(1px);
-        }
-
-        /* Secondary Button Style */
-        & {
-            background: #f1f5f9;
-            color: #475569;
-            &:hover {
-                background: #e2e8f0;
-            }
-        }
-
-        /* Primary Button Style */
-        &.primary {
-          background: linear-gradient(95deg, $accent1, $accent2);
-          color: #fff;
-          box-shadow: 0 6px 16px rgba($accent1, 0.2);
-          &:hover {
-              box-shadow: 0 8px 20px rgba($accent1, 0.3);
-              transform: translateY(-2px);
-          }
-        }
-
-        &[disabled] {
-          opacity: 0.5;
-          cursor: not-allowed;
-          box-shadow: none;
-          transform: none;
-        }
-      }
-    }
-  }
-
-  /* --- Message Box --- */
-  .message {
-    margin-top: 1.5rem;
+.search {
+    flex-grow: 1;
+    padding: 0.6rem 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
     font-size: 0.9rem;
-    padding: 0.75rem 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Trip List */
+.trip-list {
+    list-style: none;
+    margin: 0;
+    padding: 0.75rem;
+    overflow-y: auto;
+    max-height: 70vh; /* จำกัดความสูง */
+    flex-grow: 1;
+}
+
+.trip-list li {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem;
+    margin-bottom: 0.5rem;
     border-radius: 10px;
-    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    border-left: 4px solid transparent; /* เตรียมพื้นที่สำหรับ active state */
+}
 
-    &.success {
-      background: rgba($success, 0.1);
-      color: $success;
-    }
+.trip-list li:hover {
+    background-color: #f8f9fa;
+    transform: translateX(4px);
+}
 
-    &.error {
-      background: rgba($error, 0.1);
-      color: $error;
-    }
-  }
+.trip-list li.active {
+    background-color: #e7f5ff;
+    border-left: 4px solid #007bff;
+    padding-left: calc(0.8rem - 4px); /* ชดเชย border */
+}
+
+.trip-list .thumb {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: 1rem;
+    background-color: #e9ecef;
+    flex-shrink: 0;
+}
+
+.trip-list .meta {
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.trip-list .line {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 0.25rem;
+}
+
+.trip-list .id {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #6c757d;
+    margin-right: 0.5rem;
+}
+
+.trip-list .name {
+    font-weight: 700;
+    color: #343a40;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.trip-list .sub {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.trip-list .dot {
+    margin: 0 0.4rem;
+}
+
+/* Empty State */
+.empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #868e96;
+}
+
+/* Right Panel: Form */
+.right-panel {
+    flex: 2;
+    min-width: 320px;
+}
+
+.card {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.card .title {
+    margin-top: 0;
+    margin-bottom: 2rem;
+    font-size: 1.75rem;
+    color: #212529;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: #495057;
+}
+
+label.full {
+    grid-column: 1 / -1;
+}
+
+input, select, textarea {
+    margin-top: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Sarabun', sans-serif;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+select[disabled] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Buttons */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+    line-height: 1.5;
+}
+
+.btn.small {
+     padding: 0.6rem 1rem;
+     font-size: 0.9rem;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.btn.primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn.primary:hover {
+    background-color: #0069d9;
+}
+
+.btn.secondary {
+    background-color: #f1f3f5;
+    color: #495057;
+    border: 1px solid #ced4da;
+}
+
+.btn.secondary:hover {
+    background-color: #e9ecef;
+}
+
+/* Success Message */
+.message.success {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 8px;
+    text-align: center;
 }

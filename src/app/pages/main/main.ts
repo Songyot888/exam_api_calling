@@ -15,6 +15,7 @@ export class Main {
   trip_map: TripGetResponse[] = [];
   countries: { value: string; name: string }[] = [];
   zones: { value: string; name: string }[] = [];
+
   constructor(
     private http: HttpClient,
     private tripService: Trip,
@@ -23,6 +24,7 @@ export class Main {
 
   async ngOnInit() {
     const trip = await this.tripService.getAllTrip();
+    this.trip_map = trip;
     this.countries = trip
       .filter(
         (t, index, self) =>

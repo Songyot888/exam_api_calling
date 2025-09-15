@@ -13,10 +13,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './update.scss',
 })
 export class Update {
-  // --- state หลัก ---
   trip_map: TripGetResponse[] = [];
   originalTrip: TripGetResponse | null = null;
-
+  q: string = '';
   id: number | null = null;
   name = '';
   destinationId: number | null = null;
@@ -35,11 +34,6 @@ export class Update {
     { value: 1, name: 'เอเชีย' },
     { value: 2, name: 'ยุโรป' },
     { value: 3, name: 'เอเชียตะวันออกเฉียงใต้' },
-    { value: 4, name: 'โอเชียเนีย' },
-    { value: 5, name: 'ตะวันออกกลาง' },
-    { value: 6, name: 'แอฟริกา' },
-    { value: 7, name: 'อเมริกาเหนือ' },
-    { value: 8, name: 'อเมริกาใต้' },
     { value: 9, name: 'ประเทศไทย' },
   ];
 
@@ -87,30 +81,22 @@ export class Update {
       'บรูไน',
       'ติมอร์-เลสเต',
     ],
-    4: ['ออสเตรเลีย', 'นิวซีแลนด์', 'ฟิจิ'],
-    5: [
-      'สหรัฐอาหรับเอมิเรตส์',
-      'กาตาร์',
-      'โอมาน',
-      'บาห์เรน',
-      'จอร์แดน',
-      'อิสราเอล',
-      'เลบานอน',
-      'ซาอุดีอาระเบีย',
-    ],
-    6: [
-      'โมร็อกโก',
-      'อียิปต์',
-      'เคนยา',
-      'แทนซาเนีย',
-      'แอฟริกาใต้',
-      'เอธิโอเปีย',
-      'เซเชลส์',
-    ],
-    7: ['สหรัฐอเมริกา', 'แคนาดา', 'เม็กซิโก'],
-    8: ['บราซิล', 'อาร์เจนตินา', 'เปรู', 'ชิลี', 'โคลอมเบีย'],
     9: ['ประเทศไทย'],
   };
+
+  async ngOnInit() {
+    this.loadAllTrips();
+    this.cdr.detectChanges();
+  }
+
+  async loadAllTrips() {
+    try {
+      this.trip_map = await this.tripService.getAllTrip();
+    } catch (err) {
+      console.error('โหลด Trip ไม่สำเร็จ', err);
+      this.trip_map = [];
+    }
+  }
 
   onZoneChange() {
     this.country = null;
@@ -199,6 +185,23 @@ export class Update {
     } catch {
       alert('แก้ไขข้อมูลไม่สำเร็จ');
     }
+  }
+
+  get list(): TripGetResponse[] {
+    const q = (this.q || '').toLowerCase().trim();
+    if (!q) return this.trip_map;
+    return this.trip_map.filter(
+      (t) =>
+        String(t.idx ?? '').includes(q) ||
+        (t.name || '').toLowerCase().includes(q) ||
+        (t.country || '').toLowerCase().includes(q)
+    );
+  }
+
+  onSelectTrip(t: TripGetResponse) {
+    this.id = t.idx as number;
+    this.fetchTripData();
+    this.cdr.detectChanges();
   }
 
   resetForm() {

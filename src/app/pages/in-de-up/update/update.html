@@ -1,65 +1,102 @@
 <div class="insert-page">
-    <div class="card">
-        <h2 class="title">แก้ไขข้อมูล</h2>
+    <div class="row-container">
 
-        <div class="from">
-            <div class="row">
-
-                <label>
-                    ID
-                    <input [(ngModel)]="id" placeholder="id ที่ต้องการแก้ไข" />
-                </label>
-
-                <label>
-                    ชื่อ
-                    <input [(ngModel)]="name" placeholder="ชื่อTrip" />
-                </label>
-
-                <label>
-                    ราคา
-                    <input [(ngModel)]="price" placeholder="ราคา" />
-                </label>
-
-                <label>
-                    zone ประเทศ
-                    <select [(ngModel)]="destinationId" (ngModelChange)="onZoneChange()">
-                        <option [ngValue]="null" disabled>เลือกโซน</option>
-                        <option *ngFor="let z of zones" [ngValue]="z.value">{{ z.name }}</option>
-                    </select>
-                </label>
-
-                <label>
-                    ประเทศ
-                    <select [(ngModel)]="country" [disabled]="destinationId == null">
-                        <option [ngValue]="null" disabled>เลือกประเทศ</option>
-                        <option *ngFor="let c of filteredCountries" [ngValue]="c">{{ c }}</option>
-                    </select>
-                </label>
-
-                <label>
-                    วัน
-                    <input [(ngModel)]="duration" />
-                </label>
-
-                <label class="full">
-                    รายละเอียด
-                    <textarea [(ngModel)]="detail" rows="4" placeholder="รายละเอียดเพิ่มเติม..."></textarea>
-                </label>
-
-                <label>
-                    รูปภาพ
-                    <input [(ngModel)]="cover" placeholder="url รูปภาพ" />
-                </label>
-
+        <!-- ฝั่งซ้าย: รายการ Trip + ค้นหา -->
+        <aside class="left-panel">
+            <div class="left-header">
+                <h3>รายการ Trip</h3>
+                <div class="tools">
+                    <input [(ngModel)]="q" class="search" placeholder="ค้นหา: ชื่อ / ประเทศ / ID" />
+                    <button type="button" class="btn small" (click)="loadAllTrips()">รีเฟรช</button>
+                </div>
             </div>
 
-            <div class="actions">
-                <button type="button" (click)="fetchTripData()" class="btn primary">ดึงข้อมูล</button>
-                <button type="button" (click)="updatefrom()" class="btn primary">บันทึก</button>
-                <button type="button" (click)="resetForm()" class="btn">รีเซ็ต</button>
+            <ul class="trip-list" *ngIf="list?.length; else noData">
+                <li *ngFor="let t of list"  (click)="onSelectTrip(t)">
+                    <img class="thumb" [src]="t.coverimage || ''" alt="cover" />
+                    <div class="meta">
+                        <div class="line">
+                            <span class="id">#{{ t.idx }}</span>
+                            <span class="name">{{ t.name }}</span>
+                        </div>
+                        <div class="sub">
+                            <span class="country">{{ t.country || '-' }}</span>
+                            <span class="dot">•</span>
+                            <span class="price">{{ t.price ?? 0 }} ฿</span>
+                            <span class="dot" *ngIf="t.duration">•</span>
+                            <span class="duration" *ngIf="t.duration">{{ t.duration }} วัน</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <ng-template #noData>
+                <div class="empty">ยังไม่มีข้อมูล / กด “รีเฟรช” เพื่อนำเข้าลิสต์</div>
+            </ng-template>
+        </aside>
+
+        <div class="card right-panel">
+            <h2 class="title">แก้ไขข้อมูล</h2>
+
+            <div class="from">
+                <div class="row">
+
+                    <label>
+                        ID
+                        <input [(ngModel)]="id" placeholder="id ที่ต้องการแก้ไข" />
+                    </label>
+
+                    <label>
+                        ชื่อ
+                        <input [(ngModel)]="name" placeholder="ชื่อTrip" />
+                    </label>
+
+                    <label>
+                        ราคา
+                        <input [(ngModel)]="price" placeholder="ราคา" />
+                    </label>
+
+                    <label>
+                        zone ประเทศ
+                        <select [(ngModel)]="destinationId" (ngModelChange)="onZoneChange()">
+                            <option [ngValue]="null" disabled>เลือกโซน</option>
+                            <option *ngFor="let z of zones" [ngValue]="z.value">{{ z.name }}</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        ประเทศ
+                        <select [(ngModel)]="country" [disabled]="destinationId == null">
+                            <option [ngValue]="null" disabled>เลือกประเทศ</option>
+                            <option *ngFor="let c of filteredCountries" [ngValue]="c">{{ c }}</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        วัน
+                        <input [(ngModel)]="duration" />
+                    </label>
+
+                    <label class="full">
+                        รายละเอียด
+                        <textarea [(ngModel)]="detail" rows="4" placeholder="รายละเอียดเพิ่มเติม..."></textarea>
+                    </label>
+
+                    <label>
+                        รูปภาพ
+                        <input [(ngModel)]="cover" placeholder="url รูปภาพ" />
+                    </label>
+
+                </div>
+
+                <div class="actions">
+                    <button type="button" (click)="updatefrom()" class="btn primary">บันทึก</button>
+                    <button type="button" (click)="resetForm()" class="btn">รีเซ็ต</button>
+                </div>
             </div>
+
+            <div class="message success" *ngIf="saved">บันทึกเรียบร้อยแล้ว ✅</div>
         </div>
 
-        <div class="message success" *ngIf="saved">บันทึกเรียบร้อยแล้ว ✅</div>
     </div>
 </div>
